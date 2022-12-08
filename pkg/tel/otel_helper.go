@@ -1,4 +1,4 @@
-package main
+package tel
 
 import (
 	"context"
@@ -13,7 +13,7 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
 )
 
-func initTracer() *sdktrace.TracerProvider {
+func InitTracer() *sdktrace.TracerProvider {
 	OTEL_OTLP_HTTP_ENDPOINT := os.Getenv("OTEL_OTLP_HTTP_ENDPOINT")
 
 	if OTEL_OTLP_HTTP_ENDPOINT == "" {
