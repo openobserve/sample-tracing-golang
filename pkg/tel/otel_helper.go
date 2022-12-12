@@ -17,14 +17,15 @@ func InitTracer() *sdktrace.TracerProvider {
 	OTEL_OTLP_HTTP_ENDPOINT := os.Getenv("OTEL_OTLP_HTTP_ENDPOINT")
 
 	if OTEL_OTLP_HTTP_ENDPOINT == "" {
-		OTEL_OTLP_HTTP_ENDPOINT = "otel.dev2.zinclabs.dev"
+		OTEL_OTLP_HTTP_ENDPOINT = "<host>:<port>" //without trailing slash
 	}
 
 	otlptracehttp.NewClient()
 
 	otlpHTTPExporter, err := otlptracehttp.New(context.TODO(),
-		// otlptracehttp.WithInsecure(),
+		otlptracehttp.WithInsecure(), // use http & not https
 		otlptracehttp.WithEndpoint(OTEL_OTLP_HTTP_ENDPOINT),
+		otlptracehttp.WithURLPath("/api/org2/traces"),
 		otlptracehttp.WithHeaders(map[string]string{
 			"Authorization": "Basic YWRtaW46Q29tcGxleHBhc3MjMTIz",
 		}),
