@@ -1,0 +1,13 @@
+{
+  "trace_id": "d06bfddd9d13cbfcf4717e2606a3800c",
+  "span_id": "fee980d53cacd31d",
+  "flags": 1,
+  "span_kind": "1",
+  "operation_name": "GetUserDetails",
+  "start_time": 1670901422293347000,
+  "end_time": 1670901422293347791,
+  "duration": 791,
+  "service_name": "otel1-gin-gonic",
+  "service.name": "otel1-gin-gonic",
+  "_timestamp": 1670901422293347
+}

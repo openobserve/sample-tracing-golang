@@ -13,7 +13,8 @@ import (
 var tracer = otel.Tracer("github.com/zinclabs/otel-example")
 
 func main() {
-	tp := tel.InitTracer()
+	// tp := tel.InitTracerGRPC()
+	tp := tel.InitTracerHTTP()
 	defer func() {
 		if err := tp.Shutdown(context.Background()); err != nil {
 			fmt.Println("Error shutting down tracer provider: ", err)
