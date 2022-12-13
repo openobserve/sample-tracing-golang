@@ -20,7 +20,7 @@ func InitTracerGRPC() *sdktrace.TracerProvider {
 		OTEL_OTLP_GRPC_ENDPOINT = "<host>:<port>" //without trailing slash
 	}
 
-	OTEL_OTLP_GRPC_ENDPOINT = "ziox2.dev.zincsearch.com"
+	OTEL_OTLP_GRPC_ENDPOINT = "ziox2.dev.zincsearch.com:443"
 
 	otlptracegrpc.NewClient()
 
