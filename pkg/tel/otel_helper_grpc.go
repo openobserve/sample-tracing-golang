@@ -20,16 +20,18 @@ func InitTracerGRPC() *sdktrace.TracerProvider {
 		OTEL_OTLP_GRPC_ENDPOINT = "<host>:<port>" //without trailing slash
 	}
 
-	OTEL_OTLP_GRPC_ENDPOINT = "ziox2.dev.zincsearch.com:443"
+	OTEL_OTLP_GRPC_ENDPOINT = "127.0.0.1:5081"
 
 	otlptracegrpc.NewClient()
 
 	otlpGRPCExporter, err := otlptracegrpc.New(context.TODO(),
-		// otlptracegrpc.WithInsecure(), // use http & not https
-		otlptracegrpc.WithEndpoint(OTEL_OTLP_GRPC_ENDPOINT+"/api/prabhat-org3/traces"),
-		// otlptracegrpc.WithURLPath("/api/prabhat-org2/traces"),
+		otlptracegrpc.WithInsecure(), // use http & not https
+		otlptracegrpc.WithEndpoint("127.0.0.1:5081"),		
+		//otlptracegrpc.w ("/api/prabhat-org2/traces"),
 		otlptracegrpc.WithHeaders(map[string]string{
 			"Authorization": "Basic YWRtaW46Q29tcGxleHBhc3MjMTIz",
+			//"Authorization": "Bearer some-auth-token",
+			"zinc-org-id":"org1",
 		}),
 	)
 
