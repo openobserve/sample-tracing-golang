@@ -26,19 +26,16 @@ func InitTracerHTTP() *sdktrace.TracerProvider {
 		OTEL_OTLP_HTTP_ENDPOINT = "<host>:<port>" //without trailing slash
 	}
 
-	// OTEL_OTLP_HTTP_ENDPOINT = "ziox2.dev.zincsearch.com"
-	OTEL_OTLP_HTTP_ENDPOINT = "otel.dev2.zinclabs.dev"
-	// OTEL_OTLP_HTTP_ENDPOINT = "httptester.dev2.zinclabs.dev"
+	OTEL_OTLP_HTTP_ENDPOINT = "api.zinc.dev"
 
 	otlptracehttp.NewClient()
 
 	otlpHTTPExporter, err := otlptracehttp.New(context.TODO(),
 		// otlptracehttp.WithInsecure(), // use http & not https
 		otlptracehttp.WithEndpoint(OTEL_OTLP_HTTP_ENDPOINT),
-		// otlptracehttp.WithURLPath("/api/prabhat-org2/traces"),
-		otlptracehttp.WithURLPath("/v1/traces"),
+		otlptracehttp.WithURLPath("/api/default/traces"),
 		otlptracehttp.WithHeaders(map[string]string{
-			"Authorization": "Basic YWRtaW46Q29tcGxleHBhc3MjMTIz",
+			"Authorization": "Basic b21rYXJAemluY2xhYnMuaW86NFlvMHViVE0yN1cap5sIOVozNmk=",
 		}),
 	)
 
