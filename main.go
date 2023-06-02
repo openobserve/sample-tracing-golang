@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zinclabs/otel-example/pkg/tel"
@@ -35,6 +36,9 @@ func main() {
 func GetUser(c *gin.Context) {
 	ctx := c.Request.Context()
 
+	// sleep for 1 second to simulate a slow request
+	time.Sleep(1 * time.Second)
+
 	childCtx, span := tracer.Start(ctx, "GetUser")
 	defer span.End()
 
@@ -45,5 +49,8 @@ func GetUser(c *gin.Context) {
 func GetUserDetails(ctx context.Context) string {
 	_, span := tracer.Start(ctx, "GetUserDetails")
 	defer span.End()
+	// sleep for 500 ms to simulate a slow request
+	time.Sleep(500 * time.Millisecond)
+
 	return "Hello User Details from Go microservice"
 }
