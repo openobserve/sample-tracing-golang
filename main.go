@@ -52,5 +52,7 @@ func GetUserDetails(ctx context.Context) string {
 	// sleep for 500 ms to simulate a slow request
 	time.Sleep(500 * time.Millisecond)
 
+	span.AddEvent("GetUserDetails called")
+
 	return "Hello User Details from Go microservice"
 }
