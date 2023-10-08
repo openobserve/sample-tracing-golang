@@ -58,7 +58,10 @@ func GetUserDetails(ctx context.Context) string {
 
 	span.AddEvent("GetUserDetails called")
 
-	hobbies, err := GetHobbies(ctx)
+	childCtx, span := tracer.Start(ctx, "GetHobbiesCall")
+	defer span.End()
+	
+	hobbies, err := GetHobbies(childCtx)
 	if err != nil {
 		span.RecordError(err)
 	} else {
