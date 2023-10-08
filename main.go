@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/http"
 	"runtime/debug"
@@ -80,9 +79,15 @@ func GetHobbies(ctx context.Context) (string, error) {
 			fmt.Println("recovered: ", r)
 
 			// get stack trace and record it
+			message := r.(error).Error()
 			stackTrace := string(debug.Stack())
-			span.RecordError(errors.New(stackTrace))
-			span.SetStatus(codes.Error, r.(error).Error())
+			span.RecordError(r.(error))
+			span.SetStatus(codes.Error, message)
+			span.SetAttributes(attribute.String("user", "useremail@userdomain.com"))
+			span.SetAttributes(attribute.String("exception.escaped", "false"))
+			span.SetAttributes(attribute.String("exception.message", message))
+			span.SetAttributes(attribute.String("exception.stacktrace", stackTrace))
+			span.SetAttributes(attribute.String("exception.type", message))
 		}
 
 		span.End()
