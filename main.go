@@ -14,6 +14,7 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/codes"
 )
 
 var tracer = otel.Tracer("github.com/zinclabs/otel-example")
@@ -81,6 +82,7 @@ func GetHobbies(ctx context.Context) (string, error) {
 			// get stack trace and record it
 			stackTrace := string(debug.Stack())
 			span.RecordError(errors.New(stackTrace))
+			span.SetStatus(codes.Error, r.(error).Error())
 		}
 
 		span.End()
