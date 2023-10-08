@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rs/zerolog/log"
 	"github.com/zinclabs/otel-example/pkg/tel"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 	"go.opentelemetry.io/otel"
@@ -55,6 +56,9 @@ func GetUserDetails(ctx context.Context) string {
 	defer span.End()
 	// sleep for 500 ms to simulate a slow request
 	time.Sleep(500 * time.Millisecond)
+
+	// log a message to stdout with the traceID and spanID
+	log.Info().Str("traceID", span.SpanContext().TraceID().String()).Str("spanID", span.SpanContext().SpanID().String()).Msg("Log message for user details")
 
 	span.AddEvent("GetUserDetails called")
 
