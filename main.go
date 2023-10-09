@@ -32,7 +32,7 @@ func main() {
 
 	router := gin.Default()
 
-	router.Use(otelgin.Middleware("otel1-gin-gonic"))
+	router.Use(otelgin.Middleware(""))
 
 	router.GET("/", GetUser)
 
