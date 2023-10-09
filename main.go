@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"runtime"
 	"runtime/debug"
 	"strconv"
 	"time"
@@ -15,6 +16,7 @@ import (
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
+	"go.opentelemetry.io/otel/trace"
 )
 
 var tracer = otel.Tracer("github.com/zinclabs/otel-example")
@@ -85,16 +87,24 @@ func GetHobbies(ctx context.Context) (string, error) {
 		if r != nil {
 			fmt.Println("recovered: ", r)
 
-			// get stack trace and record it
-			message := r.(error).Error()
-			stackTrace := string(debug.Stack())
-			span.RecordError(r.(error))
-			span.SetStatus(codes.Error, message)
-			span.SetAttributes(attribute.String("user", "useremail@userdomain.com"))
-			span.SetAttributes(attribute.String("exception.escaped", "false"))
-			span.SetAttributes(attribute.String("exception.message", message))
-			span.SetAttributes(attribute.String("exception.stacktrace", stackTrace))
-			span.SetAttributes(attribute.String("exception.type", message))
+			// get error from panic
+			e1 := r.(error)
+			stackTrace := debug.Stack()
+			runtime.Stack(stackTrace, true)
+
+			// add attributes to the span event
+			attributes := []attribute.KeyValue{
+				attribute.String("user", "useremail@userdomain.com"),
+				attribute.String("exception.escaped", "false"),
+				attribute.String("exception.stacktrace", string(stackTrace)),
+			}
+			options := trace.WithAttributes(attributes...)
+
+			// add error to span event
+			span.RecordError(e1, options)
+
+			// set event status to error
+			span.SetStatus(codes.Error, e1.Error())
 		}
 
 		span.End()
